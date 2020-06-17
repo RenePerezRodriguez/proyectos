@@ -9,11 +9,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tesseract;
 using DarrenLee.Translator;
+using AForge.Imaging.Filters;
+using System.Drawing.Imaging;
 
 namespace Imagetranslator
 {
     public partial class Form1 : Form
     {
+        private System.Drawing.Bitmap sourceImage;
+        private System.Drawing.Bitmap filteredImage;
         public Form1()
         {
             InitializeComponent();
@@ -21,31 +25,81 @@ namespace Imagetranslator
 
         private void btnAbrirImagen_Click(object sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog() == DialogResult.OK) 
+
+
+            try
             {
-                string strFileName = openFileDialog1.FileName;
-                Bitmap imagen = new Bitmap(strFileName);
-                pictureBox1.Image=(System.Drawing.Image)imagen;
-                string nombreImagen = openFileDialog1.SafeFileName;
+                // show file open dialog
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    // load image
+                    sourceImage = (Bitmap)Bitmap.FromFile(openFileDialog1.FileName);
 
-                var img = new Bitmap(openFileDialog1.FileName);
-                var tesseract = new TesseractEngine(@"./tessdata", "eng", EngineMode.TesseractAndCube);
-                var page = tesseract.Process(img);
-                string let;
-                let = page.GetText();
-                rtxtLetras.Text = let;
-                //TRADUCTOR
-                string textotraducido = Translator.Translate(let, "en", "es");
-                richTextBox1.Text = textotraducido;
+                    // check pixel format
+                    if ((sourceImage.PixelFormat == PixelFormat.Format16bppGrayScale) ||
+                         (Bitmap.GetPixelFormatSize(sourceImage.PixelFormat) > 32))
+                    {
+                        MessageBox.Show("The demo application supports only color images.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        // free image
+                        sourceImage.Dispose();
+                        sourceImage = null;
+                    }
+                    else
+                    {
+                        // make sure the image has 24 bpp format
+                        if (sourceImage.PixelFormat != PixelFormat.Format24bppRgb)
+                        {
+                            Bitmap temp = AForge.Imaging.Image.Clone(sourceImage, PixelFormat.Format24bppRgb);
+                            sourceImage.Dispose();
+                            sourceImage = temp;
+                        }
+                    }
+
+                    // display image
+                    pictureBox1.Image = sourceImage;
+                }
             }
-            //try
-            //{
+            catch
+            {
+                MessageBox.Show("Failed loading the image", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
+
+
+
+            Bitmap originalImage = sourceImage;
+
+            sourceImage = Grayscale.CommonAlgorithms.RMY.Apply(sourceImage);
+
+            ApplyFilter(new BradleyLocalThresholding());
+
+            sourceImage.Dispose();
+            sourceImage = originalImage;
+
+
+
+            DeteccionTraduccion();
+           
+        }
+        private void ApplyFilter(IFilter filter)
+        {
+            // apply filter
+            filteredImage = filter.Apply(sourceImage);
+            // display filtered image
+            pictureBox2.Image = filteredImage;
+        }
+        public void DeteccionTraduccion()
+        {
+            //deteccion de letras
+            var tesseract = new TesseractEngine(@"./tessdata", "eng", EngineMode.TesseractAndCube);
+            var page = tesseract.Process(filteredImage);
+            string let;
+            let = page.GetText();
+            rtxtLetras.Text = let;
+            //TRADUCTOR
+            string textotraducido = Translator.Translate(let, "en", "es");
+            richTextBox1.Text = textotraducido;
         }
     }
 }
+
