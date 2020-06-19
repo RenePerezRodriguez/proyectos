@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/register_String"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/txtRNombres"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:hint="@string/name_String"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/txtRUsuario" />
+
+    <EditText
+        android:id="@+id/txtRApellidos"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:ems="10"
+        android:hint="@string/lastName_String"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/txtRNombres"
+        app:layout_constraintTop_toTopOf="@+id/txtRNombres" />
+
+    <EditText
+        android:id="@+id/txtREmail"
+        android:layout_width="355dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="@string/email_String"
+        android:inputType="textEmailAddress"
+        app:layout_constraintStart_toStartOf="@+id/txtRNombres"
+        app:layout_constraintTop_toBottomOf="@+id/txtRNombres" />
+
+    <EditText
+        android:id="@+id/txtRUsuario"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="25dp"
+        android:ems="10"
+        android:hint="@string/userName_String"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <EditText
+        android:id="@+id/txtRPassword"
+        android:layout_width="355dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:hint="@string/password_String"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toStartOf="@+id/txtRUsuario"
+        app:layout_constraintTop_toBottomOf="@+id/txtREmail" />
+
+    <EditText
+        android:id="@+id/txtRPassword02"
+        android:layout_width="355dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="@string/passwordRepeat_String"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toStartOf="@+id/txtRUsuario"
+        app:layout_constraintTop_toBottomOf="@+id/txtRPassword" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="@string/profilePicture"
+        app:layout_constraintStart_toEndOf="@+id/txtRUsuario"
+        app:layout_constraintTop_toTopOf="@+id/txtRUsuario" />
+
+    <Button
+        android:id="@+id/btnRegRegistrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/principal"
+        android:textColor="@android:color/background_light"
+        android:text="@string/register_String"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/txtRPassword02" />
+
+    <Button
+        android:id="@+id/btnRegBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:background="@drawable/boton_rojo"
+        android:text="@string/backToLogin_String"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toBottomOf="@+id/btnRegRegistrar"
+        app:layout_constraintStart_toEndOf="@+id/btnRegRegistrar"
+        app:layout_constraintTop_toTopOf="@+id/btnRegRegistrar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
